@@ -51,3 +51,13 @@ the cluster will always recover, and the distributed pubsub will work.
 # Notes
 
 See other branches for more examples. 
+* [.NET 9.0 Only version](https://github.com/resc/Akka.Mix/tree/latest-versions)
+* [.NET 9.0 fixed](https://github.com/resc/Akka.Mix/tree/multiple-seed-nodes)
+
+# Documentation links
+
+* [Distributed PubSub](https://getakka.net/articles/clustering/distributed-publish-subscribe.html)
+* [Cluster Configuration](https://getakka.net/articles/clustering/cluster-configuration.html)
+* [Cluster Node Roles](https://getakka.net/articles/clustering/member-roles.html)
+* [Cluster Routing](https://getakka.net/articles/clustering/cluster-routing.html)
+
