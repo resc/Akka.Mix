@@ -1,0 +1,25 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFrameworks>net481;net6.0</TargetFrameworks>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <LangVersion>latest</LangVersion>
+  </PropertyGroup>
+
+ 
+ <ItemGroup>
+    <Protobuf Include="Akka.Mix.Messages.proto" GrpcServices="None" />
+  </ItemGroup>
+
+ 
+ <ItemGroup>
+   <PackageReference Include="Akka" Version="1.5.33" />
+   <PackageReference Include="Google.Protobuf" Version="3.29.2" />
+   <PackageReference Include="Akka.Hosting" Version="1.5.32" />
+   <PackageReference Include="Grpc.Tools" Version="2.68.1">
+     <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+     <PrivateAssets>all</PrivateAssets>
+   </PackageReference>
+ </ItemGroup>
+</Project>

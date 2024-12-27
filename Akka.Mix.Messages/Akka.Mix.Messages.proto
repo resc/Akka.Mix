@@ -1,0 +1,36 @@
+syntax = "proto3";
+
+package Akka.Mix.Messages;
+
+// Ping message
+message Ping {
+    string message = 1;
+}
+
+// Pong message is a response to a Ping message
+message Pong {
+    string message = 1;
+}
+
+// CountReport message is a report of the number of Counts picked or placed by a robot
+message CountReport {
+    string reporter = 1;
+    int32 sequenceNumber = 2;
+    int32 count = 3;
+    string comment = 4;
+}
+
+// AckCountReport message is an acknowledgement of a CountReport message. 
+// It signals that the CountReport has been received and processed successfully.
+message AckCountReport {
+    string reporter = 1;
+    int32 sequenceNumber = 2;
+}
+
+// NackCountReport message is a negative acknowledgement of a CountReport message.
+// It signals that there was an error processing a received CountReport.
+message NackCountReport {
+    string reporter = 1;
+    int32 sequenceNumber = 2;
+    repeated string errors = 3;
+}
