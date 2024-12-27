@@ -29,9 +29,11 @@ public class Program
                     })
                     .WithClustering(new ClusterOptions
                     {
-                        SeedNodes = ["akka.tcp://Akka-Mix@localhost:8100"],
+                        SeedNodes = [
+                            "akka.tcp://Akka-Mix@localhost:8100",
+                            "akka.tcp://Akka-Mix@localhost:8101"
+                            ],
                         SplitBrainResolver = SplitBrainResolverOption.Default,
-                        MinimumNumberOfMembers = 1,
                     })
 
                     .WithDistributedPubSub("")

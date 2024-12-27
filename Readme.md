@@ -41,5 +41,13 @@ Now for the interesting part.
 if you do it the other way around, i.e. stop the .NET 4.8 app and start it again, the count report messages are received just fine.
 
 
+# Fix
 
+The problem is that the .NET 6.0 app is not able to find the .NET 4.8 app's actor system.
+The solution is to **add all nodes to the seed node list**.
+After that it does not matter which app is started first, or which app is stopped and started again,
+the cluster will always recover, and the distributed pubsub will work.
 
+# Notes
+
+See other branches for more examples. 
