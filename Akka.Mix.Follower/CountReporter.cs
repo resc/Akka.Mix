@@ -17,10 +17,12 @@ public class CountReporter : ReceiveActor, IWithTimers
     private readonly ILoggingAdapter _log;
     public ITimerScheduler Timers { get; set; } = null!;
 
+    private readonly SendHello _hello;
     private readonly IActorRef _mediator;
 
     public CountReporter(string CountReporter)
     {
+        _hello = new SendHello(new CountTopicHello { Message = "Hello from " + Self.Path.Name });
         _mediator = DistributedPubSub.Get(Context.System).Mediator;
         _log = Context.GetLogger();
         if (string.IsNullOrWhiteSpace(CountReporter))
@@ -48,6 +50,16 @@ public class CountReporter : ReceiveActor, IWithTimers
             }, nack => _state.CanBeNackedBy(nack));
 
         Receive<NextCountReport>(_ => PublishCountReport());
+
+        Receive<CountTopicHello>(hello =>
+        {
+            _log.Warning("CountTopicHello received from {0}", Sender);
+        });
+
+        Receive<SendHello>(hello =>
+        {
+            _mediator.Tell(new Publish(CountReport.Topic, hello.Hello));
+        });
     }
 
 
@@ -55,6 +67,8 @@ public class CountReporter : ReceiveActor, IWithTimers
     {
         base.PreStart();
         ScheduleNextCountReport();
+        _mediator.Tell(new Subscribe(CountReport.Topic, Self));
+        Timers.StartPeriodicTimer(_hello, _hello, TimeSpan.FromSeconds(10));
     }
 
     private void ScheduleNextCountReport()
@@ -84,10 +98,9 @@ public class CountReporter : ReceiveActor, IWithTimers
             Comment = ""
         };
 
-
-        var viaProcessorPath = new CountReport(template) { Comment = "via processor path" };
-        _log.Info("CountReportProtocol {0} publishing report {1}", _state.Reporter, viaProcessorPath);
-        _mediator.Tell(new SendToAll(CountReport.ProcessorPath, viaProcessorPath));
+        // var viaProcessorPath = new CountReport(template) { Comment = "via processor path" };
+        //  _log.Info("CountReportProtocol {0} publishing report {1}", _state.Reporter, viaProcessorPath);
+        //  _mediator.Tell(new SendToAll(CountReport.ProcessorPath, viaProcessorPath));
 
         var viaTopic = new CountReport(template) { Comment = "via topic" };
         _log.Info("CountReportProtocol {0} publishing report {1}", _state.Reporter, viaTopic);
@@ -97,6 +110,7 @@ public class CountReporter : ReceiveActor, IWithTimers
     }
 
     private record NextCountReport();
+    private record SendHello(CountTopicHello Hello);
 
     public record ProtocolState(string Reporter, int SequenceNumber, int SequenceNumberAck, int PlantCount);
 }

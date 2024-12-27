@@ -5,12 +5,15 @@ using Akka.Mix.Messages;
 
 namespace Akka.Mix.Leader;
 
-public class CountReportProcessor : ReceiveActor 
-{  
-    private readonly CountReportCache _cache = new(); 
+public class CountReportProcessor : ReceiveActor, IWithTimers
+{
+    public ITimerScheduler Timers { get; set; } = null!;
+    private readonly CountReportCache _cache = new();
 
     public CountReportProcessor()
     {
+        _mediator = DistributedPubSub.Get(Context.System).Mediator;
+        _hello = new SendHello(new CountTopicHello { Message = "Hello from " + Self.Path.Name });
         var log = Context.GetLogger();
         log.Info("CountReportProcessor started");
         Receive<CountReport>(countReport =>
@@ -41,18 +44,36 @@ public class CountReportProcessor : ReceiveActor
                 Reporter = countReport.Reporter,
                 SequenceNumber = countReport.SequenceNumber
             });
+
+
         });
+        
         Receive<SubscribeAck>(msg =>
         {
             log.Info($"CountReportProcessor received SubscribeAck {msg.Subscribe.Topic}");
         });
+
+        Receive<CountTopicHello>(hello =>
+        {
+            log.Warning("CountTopicHello received from {0}", Sender);
+        });
+
+        Receive<SendHello>(hello =>
+        {
+            _mediator.Tell(new Publish(CountReport.Topic, hello.Hello));
+        });
     }
 
+    private readonly IActorRef _mediator;
+    private readonly SendHello _hello;
+
+    private record SendHello(CountTopicHello Hello);
+ 
     protected override void PreStart()
     {
-        var mediator = DistributedPubSub.Get(Context.System).Mediator;
-        mediator.Tell(new Put(Self));
-        mediator.Tell(new Subscribe(CountReport.Topic, Self));
+        _mediator.Tell(new Put(Self));
+        _mediator.Tell(new Subscribe(CountReport.Topic, Self));
+        Timers.StartPeriodicTimer(_hello, _hello, TimeSpan.FromSeconds(10));
     }
 
 

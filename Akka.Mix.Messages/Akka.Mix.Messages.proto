@@ -14,7 +14,7 @@ message Pong {
 
 // CountTopicHello is a message sent to the CountTopic to announce the presence of a new publisher or subscriber
 message CountTopicHello {
-    string publisher = 1;
+    string message = 1;
 }
 
 
