@@ -85,9 +85,9 @@ public class CountReporter : ReceiveActor, IWithTimers
         };
 
 
-        var viaProcessorPath = new CountReport(template) { Comment = "via processor path" };
-        _log.Info("CountReportProtocol {0} publishing report {1}", _state.Reporter, viaProcessorPath);
-        _mediator.Tell(new SendToAll(CountReport.ProcessorPath, viaProcessorPath));
+        //  var viaProcessorPath = new CountReport(template) { Comment = "via processor path" };
+        //  _log.Info("CountReportProtocol {0} publishing report {1}", _state.Reporter, viaProcessorPath);
+        //  _mediator.Tell(new SendToAll(CountReport.ProcessorPath, viaProcessorPath));
 
         var viaTopic = new CountReport(template) { Comment = "via topic" };
         _log.Info("CountReportProtocol {0} publishing report {1}", _state.Reporter, viaTopic);

@@ -1,5 +1,4 @@
-﻿using System.Reflection;
-using Akka.Cluster.Hosting;
+﻿using Akka.Cluster.Hosting;
 using Akka.Cluster.Hosting.SBR;
 using Akka.DependencyInjection;
 using Akka.Hosting;
@@ -9,31 +8,39 @@ using Microsoft.Extensions.Hosting;
 
 namespace Akka.Mix.Follower;
 
-
 public class Program
 {
     public static async Task Main(string[] args)
     {
-        var name = "Akka-Mix";
+        const string actorSystemName = "Akka-Mix";
+        const string hostName = "localhost";
+        const int myPort = 8101;
+        const int otherPort = 8100;
+
         var builder = Host.CreateDefaultBuilder(args);
         builder.ConfigureServices(services =>
         {
-            services.AddAkka(name, builder =>
-            {
+            services.AddAkka(actorSystemName, builder =>
+            { 
                 builder
                     .WithAkkaMixMessagesSerializer()
                     .WithRemoting(options =>
                     {
-                        options.HostName = "localhost";
-                        options.Port = 8101;
+                        options.HostName = hostName;
+                        options.Port = myPort;
                     })
                     .WithClustering(new ClusterOptions
-                    {
-                        SeedNodes = ["akka.tcp://Akka-Mix@localhost:8100"],
+                    { 
+                        SeedNodes = [
+                            // we need all the nodes in the cluster defined here
+                            // otherwise if the cluster-seed dies, the DistributedPubSub 
+                            // will not re-start properly when the seed comes back up.                            
+                            $"akka.tcp://{actorSystemName}@{hostName}:{myPort}", 
+                            $"akka.tcp://{actorSystemName}@{hostName}:{otherPort}", 
+                        ],
                         SplitBrainResolver = SplitBrainResolverOption.Default,
-                        MinimumNumberOfMembers = 1,
                     })
-
+                    // Run DistributedPubSub on all nodes by specifying empty role
                     .WithDistributedPubSub("")
                     .StartActors((system, registry) =>
                     {
