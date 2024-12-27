@@ -1,6 +1,6 @@
 using System.Diagnostics.CodeAnalysis;
 
-namespace Akka.Mix.Net60;
+namespace Akka.Mix.Leader;
 
 public class ReceivedCountReportComparer : IComparer<ReceivedCountReport>, IEqualityComparer<ReceivedCountReport>
 {

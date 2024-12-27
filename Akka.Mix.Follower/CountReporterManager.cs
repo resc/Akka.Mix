@@ -1,7 +1,7 @@
 using Akka.Actor;
 using Akka.DependencyInjection;
 
-namespace Akka.Mix.Net48;
+namespace Akka.Mix.Follower;
 
 /// <summary> Manages a collection of count reporters. </summary>
 public class CountReporterManager : ReceiveActor

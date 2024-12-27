@@ -3,9 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.0.31903.59
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Akka.Mix.Net48", "Akka.Mix.Net48\Akka.Mix.Net48.csproj", "{3D9B4BB3-BDA5-4078-9679-22688FE019EC}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Akka.Mix.Follower", "Akka.Mix.Follower\Akka.Mix.Follower.csproj", "{3D9B4BB3-BDA5-4078-9679-22688FE019EC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Akka.Mix.Net60", "Akka.Mix.Net60\Akka.Mix.Net60.csproj", "{DB4D6198-3050-4746-B5AA-60DFCB7238EC}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Akka.Mix.Leader", "Akka.Mix.Leader\Akka.Mix.Leader.csproj", "{DB4D6198-3050-4746-B5AA-60DFCB7238EC}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Akka.Mix.Messages", "Akka.Mix.Messages\Akka.Mix.Messages.csproj", "{50E77CC6-DDF6-437D-B167-4A4291870192}"
 EndProject

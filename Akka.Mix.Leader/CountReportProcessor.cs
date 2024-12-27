@@ -3,7 +3,7 @@ using Akka.Cluster.Tools.PublishSubscribe;
 using Akka.Event;
 using Akka.Mix.Messages;
 
-namespace Akka.Mix.Net60;
+namespace Akka.Mix.Leader;
 
 public class CountReportProcessor : ReceiveActor 
 {  

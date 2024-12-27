@@ -1,4 +1,4 @@
-﻿using System.Reflection;
+﻿using System.Configuration;
 using Akka.Cluster.Hosting;
 using Akka.Cluster.Hosting.SBR;
 using Akka.DependencyInjection;
@@ -7,8 +7,7 @@ using Akka.Mix.Messages;
 using Akka.Remote.Hosting;
 using Microsoft.Extensions.Hosting;
 
-namespace Akka.Mix.Net48;
-
+namespace Akka.Mix.Leader;
 
 public class Program
 {
@@ -19,29 +18,27 @@ public class Program
         builder.ConfigureServices(services =>
         {
             services.AddAkka(name, builder =>
-            {
+            { 
                 builder
                     .WithAkkaMixMessagesSerializer()
                     .WithRemoting(options =>
                     {
                         options.HostName = "localhost";
-                        options.Port = 8101;
+                        options.Port = 8100;
                     })
                     .WithClustering(new ClusterOptions
-                    {
+                    { 
                         SeedNodes = ["akka.tcp://Akka-Mix@localhost:8100"],
                         SplitBrainResolver = SplitBrainResolverOption.Default,
                         MinimumNumberOfMembers = 1,
                     })
-
                     .WithDistributedPubSub("")
                     .StartActors((system, registry) =>
                     {
                         var resolver = DependencyResolver.For(system);
-                        system.ActorOf(resolver.Props<Pinger>(), "pinger");
-                        system.ActorOf(resolver.Props<CountReporterManager>(), "plant-reporters");
+                        system.ActorOf(resolver.Props<Ponger>(), "ponger");
+                        system.ActorOf(resolver.Props<CountReportProcessor>(), CountReport.ProcessorName);
                     });
-
             });
         });
 

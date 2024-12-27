@@ -4,7 +4,7 @@ using Akka.Cluster.Tools.PublishSubscribe;
 using Akka.Event;
 using Akka.Mix.Messages;
 
-namespace Akka.Mix.Net48;
+namespace Akka.Mix.Follower;
 
 /// <summary>
 /// A count reporter is an actor that reports the number of items picked or placed by a robot.

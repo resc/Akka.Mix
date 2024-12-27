@@ -2,7 +2,7 @@ using Akka.Actor;
 using Akka.Event;
 using Akka.Mix.Messages;
 
-namespace Akka.Mix.Net48;
+namespace Akka.Mix.Follower;
 
 public class Pinger : ReceiveActor, IWithTimers
 {

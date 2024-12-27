@@ -1,18 +1,18 @@
 # Distributed PubSub with Akka.NET
 
-This is a simple example of how to use Akka.NET's Distributed PubSub to send and receive messages between different actors in different .NET versions.
+This is a simple example of how to use Akka.NET's Distributed PubSub to send and receive messages between actors in different processes.
 
-The .NET 4.8 version is the 'follower' and the .NET 6.0 version is the 'leader'.
-This is only because we've used the .NET 6.0 version's port as the seed node address.
+One app is the 'follower' and the other is the 'leader'.
+This is only because we've used the leader's port for the seed node address.
 
 # Examples
+
 ## Ping / Pong
 
 This is a simple example of how to send and receive messages between actors by using well known actor paths/addresses.
 
 The follower sends periodic ping messages to the leader.
 The leader responds with a pong message.    
-
 
 # Count Report
 
@@ -28,17 +28,19 @@ The processor sends acknowledgements back to the reporter. It will reply with a 
 
 * build the project from scratch `dotnet build .\Akka.Mix.sln --no-incremental`
 * open 2 terminal windows
-  * in the first terminal window run the .NET 4.8 version `.\Akka.Mix.Net48\bin\Debug\net481\Akka.Mix.Net48.exe`
-  * in the second terminal window run the .NET 6.0 version `.\Akka.Mix.Net60\bin\Debug\net6.0\Akka.Mix.Net60.exe`   
-* Observe that the cluster is formed and both the ping and count report messages are received by the .NET 6.0 actors
+  * in the first terminal window run the follower `.\Akka.Mix.Follower\bin\Debug\net9.0\Akka.Mix.Follower.exe`
+    * wait for it to start, and start complaining about the leader not being available.
+  * in the second terminal window run the leader `.\Akka.Mix.Leader\bin\Debug\net9.0\Akka.Mix.Leader.exe`   
+* Observe that the cluster is now formed and both the ping and count report messages are being received successfully by the leader
 
 Now for the interesting part.
 
-* stop the .NET 6.0 app using `ctrl-c`
-* start the .NET 6.0 app again `.\Akka.Mix.Net60\bin\Debug\net6.0\Akka.Mix.Net60.exe`
-* Observe that the cluster is re-formed and the .NET 6.0 app is now able to receive the ping messages again. but the count report messages are not received, not even after waiting for multiple minutes.
+* stop the leader app using `ctrl-c`
+* start the leader app again `.\Akka.Mix.Leader\bin\Debug\net9.0\Akka.Mix.Leader.exe`
+* Observe that the cluster is re-formed and the leader app is now able to receive the ping messages again. but the count report messages are not received, not even after waiting for multiple minutes.
 
-if you do it the other way around, i.e. stop the .NET 4.8 app and start it again, the count report messages are received just fine.
+By contrast, if you do it the other way around, i.e. stop the follower app and start it again, the count report messages are received just fine after the cluster is re-formed.
+
 
 
 

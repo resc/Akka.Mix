@@ -1,7 +1,7 @@
 using System.Collections.Concurrent;
 using Akka.Mix.Messages;
 
-namespace Akka.Mix.Net60;
+namespace Akka.Mix.Leader;
 
 public class CountReportCache : ConcurrentDictionary<string, SortedSet<ReceivedCountReport>>
 {

@@ -1,6 +1,6 @@
 using Akka.Mix.Messages;
 
-namespace Akka.Mix.Net48;
+namespace Akka.Mix.Follower;
 
 public static class StateExtensions
 {

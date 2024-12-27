@@ -2,7 +2,7 @@ using Akka.Actor;
 using Akka.Event;
 using Akka.Mix.Messages;
 
-namespace Akka.Mix.Net60;
+namespace Akka.Mix.Leader;
 
 public class Ponger : ReceiveActor
 {
